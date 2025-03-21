@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import '../utilities/constants.dart'; // Đảm bảo đường dẫn đúng với cấu trúc thư mục của bạn
+import 'package:clima/utilities/constants.dart';
 
 class CityScreen extends StatefulWidget {
   @override
-  State<CityScreen> createState() => _CityScreenState();
+  _CityScreenState createState() => _CityScreenState();
 }
 
 class _CityScreenState extends State<CityScreen> {
-  String? cityName; // Sửa thành kiểu dữ liệu nullable để tránh lỗi Null Safety
+  String? cityName; // Sử dụng kiểu dữ liệu nullable
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage('images/city_background.jpg'),
             fit: BoxFit.cover,

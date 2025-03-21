@@ -9,17 +9,15 @@ class Location {
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.deniedForever) {
-          // Xử lý khi người dùng từ chối quyền vĩnh viễn
-          print('Location permissions are permanently denied.');
-          return;
-        }
-
         if (permission == LocationPermission.denied) {
-          // Xử lý khi người dùng từ chối quyền tạm thời
-          print('Location permissions are denied.');
+          print('Quyền truy cập vị trí bị từ chối.');
           return;
         }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        print('Quyền truy cập vị trí bị từ chối vĩnh viễn.');
+        return;
       }
 
       Position position = await Geolocator.getCurrentPosition(
@@ -29,7 +27,7 @@ class Location {
       latitude = position.latitude;
       longitude = position.longitude;
     } catch (e) {
-      print('Error retrieving location: $e');
+      print('Lỗi khi lấy vị trí: $e');
     }
   }
 }

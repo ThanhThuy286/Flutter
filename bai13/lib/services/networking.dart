@@ -4,20 +4,21 @@ import 'dart:convert';
 class NetworkHelper {
   NetworkHelper(this.url);
 
-  final Uri url; // Chuyển thành kiểu dữ liệu `Uri` theo chuẩn mới
+  final Uri url; // Đổi kiểu dữ liệu từ String thành Uri
 
-  Future getData() async {
+  Future<dynamic> getData() async {
     try {
-      final response = await http.get(url);
+      http.Response response = await http.get(url);
 
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        String data = response.body;
+        return jsonDecode(data);
       } else {
-        print('Error: ${response.statusCode}');
-        return null; // Trả về null nếu xảy ra lỗi
+        print('Lỗi mạng với mã lỗi: ${response.statusCode}');
+        return null;
       }
     } catch (e) {
-      print('Failed to fetch data: $e');
+      print('Lỗi khi kết nối tới server: $e');
       return null;
     }
   }

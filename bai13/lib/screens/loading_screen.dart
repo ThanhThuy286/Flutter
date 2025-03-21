@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'location_screen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import '../services/weather.dart';
+import 'package:clima/services/weather.dart';
 
 class LoadingScreen extends StatefulWidget {
-  const LoadingScreen({super.key});
-
   @override
   State<StatefulWidget> createState() {
     return _LoadingScreenState();
@@ -22,8 +20,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void getLocationData() async {
     var weatherData = await WeatherModel().getLocationWeather();
 
-    if (!mounted) return; // Kiểm tra nếu widget đã bị huỷ (tránh lỗi trong async)
-
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return LocationScreen(
         locationWeather: weatherData,
@@ -33,7 +29,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: SpinKitDoubleBounce(
           color: Colors.white,

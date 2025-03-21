@@ -4,7 +4,7 @@ import 'package:clima/services/weather.dart';
 import 'city_screen.dart';
 
 class LocationScreen extends StatefulWidget {
-  const LocationScreen({this.locationWeather, Key? key}) : super(key: key);
+  const LocationScreen({super.key, this.locationWeather});
 
   final dynamic locationWeather;
 
@@ -34,12 +34,15 @@ class _LocationScreenState extends State<LocationScreen> {
         cityName = '';
         return;
       }
-      double temp = weatherData['main']['temp'];
-      temperature = temp.toInt();
-      var condition = weatherData['weather'][0]['id'];
+
+      double? temp = weatherData['main']?['temp'];
+      temperature = temp?.toInt() ?? 0;
+
+      var condition = weatherData['weather']?[0]?['id'] ?? 0;
       weatherIcon = weather.getWeatherIcon(condition);
+
       weatherMessage = weather.getMessage(temperature!);
-      cityName = weatherData['name'];
+      cityName = weatherData['name'] ?? 'Unknown Location';
     });
   }
 
@@ -48,12 +51,11 @@ class _LocationScreenState extends State<LocationScreen> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
+          image: const DecorationImage(
             image: AssetImage('images/location_background.jpg'),
             fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-                Colors.white.withOpacity(0.8), BlendMode.dstATop),
           ),
+          color: Colors.white.withOpacity(0.8),
         ),
         constraints: const BoxConstraints.expand(),
         child: SafeArea(
@@ -64,24 +66,19 @@ class _LocationScreenState extends State<LocationScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  TextButton(
+                  IconButton(
                     onPressed: () async {
                       var weatherData = await weather.getLocationWeather();
                       updateUI(weatherData);
                     },
-                    child: const Icon(
-                      Icons.near_me,
-                      size: 50.0,
-                    ),
+                    icon: const Icon(Icons.near_me, size: 50.0),
                   ),
-                  TextButton(
+                  IconButton(
                     onPressed: () async {
                       var typedName = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) {
-                            return CityScreen();
-                          },
+                          builder: (context) =>  CityScreen(),
                         ),
                       );
                       if (typedName != null) {
@@ -90,10 +87,7 @@ class _LocationScreenState extends State<LocationScreen> {
                         updateUI(weatherData);
                       }
                     },
-                    child: const Icon(
-                      Icons.location_city,
-                      size: 50.0,
-                    ),
+                    icon: const Icon(Icons.location_city, size: 50.0),
                   ),
                 ],
               ),
